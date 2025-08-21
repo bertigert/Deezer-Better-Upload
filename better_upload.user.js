@@ -2,7 +2,7 @@
 // @name        Better Upload
 // @description Enhances the process of uploading mp3 files to Deezer by providing a better UI and handling for uploads.
 // @author      bertigert
-// @version     1.0.0
+// @version     1.0.1
 // @icon        https://www.google.com/s2/favicons?sz=64&domain=deezer.com
 // @namespace   Violentmonkey Scripts
 // @match       https://www.deezer.com/*
@@ -576,7 +576,13 @@
             file_upload_input.multiple = true;
             file_upload_input.accept = "audio/mp3,audio/mpeg";
             file_upload_input.className = "better-upload-hidden";
-            file_upload_input.onchange = () => UI.funcs.upload_file(file_upload_input.files, info_container, progress_bar, info_list, status_element);
+            let is_processing = false;
+            file_upload_input.onchange = async () => {
+                if (is_processing) return;
+                is_processing = true;
+                await UI.funcs.upload_file(file_upload_input.files, info_container, progress_bar, info_list, status_element);
+                is_processing = false;
+            }
 
             const orig_upload_input = toolbar.querySelector("input[data-testid='upload-file']");
             orig_upload_input.parentNode.querySelector("button").onclick = (e) => {
@@ -690,6 +696,8 @@
                     color: var(--tempo-colors-text-neutral-secondary-default);
                     background: inherit;
                     border-bottom: 1px solid var(--tempo-colors-divider-neutral-primary-default);
+                    overflow: auto;
+                    scrollbar-gutter: stable;
                 }
 
                 ul.better-upload-info-list {
@@ -697,6 +705,7 @@
                     background: inherit;
                     margin-top: 10px;
                     overflow: auto;
+                    scrollbar-gutter: stable;
                 }
 
                 li.better-upload-info-item {
