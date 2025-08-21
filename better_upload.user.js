@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        deezer.com
-// @description
+// @description Enhances the process of uploading mp3 files to Deezer by providing a better UI and handling for uploads.
 // @author      bertigert
 // @version     1.0.0
 // @icon        https://www.google.com/s2/favicons?sz=64&domain=deezer.com
